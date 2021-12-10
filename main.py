@@ -10,7 +10,7 @@ skey = sys.argv[3]
 sckey = sys.argv[4]
 # 企业微信推送
 # 是否开启企业微信推送false关闭true开启，默认关闭，开启后请填写设置并将上面两个都留空
-position = False
+position = sys.argv[5]
 base_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?'
 req_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token='
 corpid = sys.argv[6]  # 企业ID， 登陆企业微信，在我的企业-->企业信息里查看
@@ -32,7 +32,7 @@ area = sys.argv[13]
 # 以下如果看不懂直接默认就行只需改上面
 
 # 系数K查询到天气后降低步数比率，如查询得到设置地区为多云天气就会在随机后的步数乘0.9作为最终修改提交的步数
-K_dict = {"多云": 0.9, "阴": 0.8, "小雨": 0.7, "中雨": 0.5, "大雨": 0.4, "暴雨": 0.3, "大暴雨": 0.2, "特大暴雨": 0.2}
+K_dict = {"多云": 0.95, "阴": 0.9, "小雨": 0.85, "中雨": 0.8, "大雨": 0.75, "暴雨": 0.7, "大暴雨": 0.65, "特大暴雨": 0.6}
 
 # 设置运行程序时间点,24小时制（不要设置0，1，2可能会发生逻辑错误），这边设置好云函数触发里也要改成相同的小时运行，与time_list列表对应，如默认：30 0 8,10,13,15,17,19,21 * * * *，不会的改8,10,13,15,17,19,21就行替换成你要运行的时间点，其它复制
 # 默认表示为8点10点13点15点17点19点21点运行,如需修改改time_list列表，如改成：time_list = [7, 9, 13, 15, 17, 19, 20]就表示为7点9点13点15点17点19点20点运行，云函数触发里面也要同步修改
@@ -44,9 +44,9 @@ time_list = [8, 10, 13, 15, 17, 19, 21]
 set_push = [True, True, True, True, True, True, True]
 
 # 最小步数（如果只需要刷步的次数少于7次就将该次数以后的步数全都改成0，如：time_list[3]: 0，表示第五次开始不运行或者直接云函数触发里面不在该时间调用均可（建议用后者））
-min_dict = {time_list[0]: 6000, time_list[1]: 10000, time_list[2]: 20000, time_list[3]: 30000, time_list[4]: 40000, time_list[5]: 50000, time_list[6]: 60000}
+min_dict = {time_list[0]: 6000, time_list[1]: 10000, time_list[2]: 15000, time_list[3]: 20000, time_list[4]: 25000, time_list[5]: 30000, time_list[6]: 35000}
 # 最大步数（例如现在设置意思是在8点（你设置的第一个时间点默认8）运行会在1500到2999中随机生成一个数提交（开启气候降低步数会乘系数K）10点3000~4999。。。以此类推，步数范围建议看懂了再改，没看懂直接默认就好）
-max_dict = {time_list[0]: 9999, time_list[1]: 19999, time_list[2]: 29999, time_list[3]: 39999, time_list[4]: 49999, time_list[5]: 59999, time_list[6]: 69999}
+max_dict = {time_list[0]: 9999, time_list[1]: 14999, time_list[2]: 19999, time_list[3]: 24999, time_list[4]: 29999, time_list[5]: 34999, time_list[6]: 39999}
 # 设置结束
 #now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 # 北京时间
@@ -262,7 +262,7 @@ def main(_user,_passwd,min_1, max_1):
     data = f'userid={userid}&last_sync_data_time=1597306380&device_type=0&last_deviceid=DA932FFFFE8816E7&data_json={data_json}'
 
     response = requests.post(url, data=data, headers=head).json()
-    print(response)
+    # print(response)
     result = f"[{now}]\n账号：{user[:3]}****{user[7:]}\n修改步数（{step}）[" + response['message'] + "]\n"
     print(result)
     return result
