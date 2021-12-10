@@ -71,7 +71,7 @@ def start():
 
     payload = {"title": "腾讯视频V力值签到通知", "desp": status}
     print(payload)
-    # requests.post(ftqq_url, params=payload)
+    requests.post(ftqq_url, params=payload)
 
 
 def main_handler(event, context):
