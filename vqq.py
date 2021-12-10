@@ -20,6 +20,7 @@ auth_refresh_url = f"https://access.video.qq.com/user/auth_refresh?{arkey}"
 
 #vcookie
 vcookie = sys.argv[3]
+print('orc=' + vcookie)
 
 url1 = "https://vip.video.qq.com/fcgi-bin/comm_cgi?name=hierarchical_task_system&cmd=2"
 url2 = "https://v.qq.com/x/bu/mobile_checkin"
@@ -38,6 +39,8 @@ if not cookie:
     requests.post(ftqq_url, params=payload)
     exit
 
+print(cookie)
+
 
 def rmVqs(vcookie):
     return re.sub(r'\s*vqq_vusession=[^;]*;', '', vcookie)
@@ -46,9 +49,9 @@ def rmVqs(vcookie):
 def start():
     sign_headers = {
         "Referer": "https://m.v.qq.com",
-        "Cookie": f'{rmVqs(vcookie)}vqq_vusession={cookie["vqq_vusession"]};',
+        "Cookie": f"{rmVqs(vcookie)}vqq_vusession={cookie['vqq_vusession']};",
     }
-    print(sign_headers['Cookie'])
+    print('rmc=' + sign_headers['Cookie'])
 
     sign1 = requests.get(url1, headers=sign_headers).text
     if "Account Verify Error" in sign1:
@@ -67,7 +70,8 @@ def start():
         status = status + "\n\n 链接2 成功"
 
     payload = {"title": "腾讯视频V力值签到通知", "desp": status}
-    requests.post(ftqq_url, params=payload)
+    print(payload)
+    # requests.post(ftqq_url, params=payload)
 
 
 def main_handler(event, context):
