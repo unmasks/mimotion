@@ -1,10 +1,6 @@
 name: vqq-sign
 
 on:
-  #push:
-  #  branches: [ main ]
-  #pull_request:
-  #  branches: [ main ]
   schedule:
     - cron: '7 23 * * *'
   watch:
