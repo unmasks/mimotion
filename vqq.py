@@ -19,8 +19,8 @@ arkey = sys.argv[2]
 auth_refresh_url = f"https://access.video.qq.com/user/auth_refresh?{arkey}"
 
 #vcookie
-vcookie = sys.argv[3]
-print('orc=' + vcookie)
+# vcookie = sys.argv[3]
+vcookie = 'tvfe_boss_uuid=9e6fda1f6e0aef6c; video_guid=8da97668983f2553; video_platform=2; pgv_pvid=7083940873; pgv_info=ssid=s7584507632; _qpsvr_localtk=0.7789290835782194; RK=uUYwDdOaHO; ptcz=32a3e4fec1adb0ad36649af91a142d1b4795fd412017c4617257a865d1fd3bf3; main_login=qq; vqq_access_token=B2145F56D3B5F349360789F2FC815A8C; vqq_appid=101483052; vqq_openid=C451041BD2DBF20318039E0BAA75C1E1; vqq_vuserid=237354545; vqq_vusession=-FJtpRMOnoc0Frzk4KLagA..; vqq_refresh_token=5B46657C33D4D5E753CCCF037F50D63D; vqq_next_refresh_time=6600; vqq_login_time_init=1639144464; login_time_init=2021-12-10 21:54:25; uid=554832033;'
 
 url1 = "https://vip.video.qq.com/fcgi-bin/comm_cgi?name=hierarchical_task_system&cmd=2"
 url2 = "https://v.qq.com/x/bu/mobile_checkin"
