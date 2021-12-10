@@ -8,24 +8,25 @@
 """
 
 # python
-import requests
-# req = requests.session()
-# req.keep_alive = False
-import urllib3
+import sys, requests, re
 
-urllib3.disable_warnings()
+# 推送server酱
+sckey = sys.argv[1]
+ftqq_url = f"https://sctapi.ftqq.com/{sckey}.send"
 
-auth_refresh_url = "https://access.video.qq.com/user/auth_refresh?vappid=11059694&vsecret=fdf61a6be0aad57132bc5cdf78ac30145b6cd2c1470b0cfe&type=qq&g_tk=&g_vstk=973910225&g_actk=968279508&callback=jQuery19109822469403028486_1639144467219&_=1639144467220"
-sckey = "SCT102724TTVMjMKTYZP7qeiFpH7XTaIPL"
+# auth_refresh_key
+arkey = sys.argv[2]
+auth_refresh_url = f"https://access.video.qq.com/user/auth_refresh?{arkey}"
 
-ftqq_url = "https://sctapi.ftqq.com/%s.send" % (sckey)
+#vcookie
+vcookie = sys.argv[3]
+
 url1 = "https://vip.video.qq.com/fcgi-bin/comm_cgi?name=hierarchical_task_system&cmd=2"
 url2 = "https://v.qq.com/x/bu/mobile_checkin"
 
 login_headers = {
     "Referer": "https://v.qq.com",
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.190 Safari/537.36',
-    "Cookie": "tvfe_boss_uuid=9e6fda1f6e0aef6c; video_guid=8da97668983f2553; video_platform=2; pgv_pvid=7083940873; pgv_info=ssid=s7584507632; _qpsvr_localtk=0.7789290835782194; RK=uUYwDdOaHO; ptcz=32a3e4fec1adb0ad36649af91a142d1b4795fd412017c4617257a865d1fd3bf3; main_login=qq; vqq_access_token=B2145F56D3B5F349360789F2FC815A8C; vqq_appid=101483052; vqq_openid=C451041BD2DBF20318039E0BAA75C1E1; vqq_vuserid=237354545; vqq_vusession=-FJtpRMOnoc0Frzk4KLagA..; vqq_refresh_token=5B46657C33D4D5E753CCCF037F50D63D; vqq_next_refresh_time=6600; vqq_login_time_init=1639144464; login_time_init=2021-12-10 21:54:25; uid=554832033;",
+    "Cookie": vcookie,
 }
 
 login = requests.get(url=auth_refresh_url, headers=login_headers)
@@ -37,15 +38,18 @@ if not cookie:
     requests.post(ftqq_url, params=payload)
     exit
 
-sign_headers = {
-    "Cookie": "tvfe_boss_uuid=9e6fda1f6e0aef6c; video_guid=8da97668983f2553; video_platform=2; pgv_pvid=7083940873; pgv_info=ssid=s7584507632; _qpsvr_localtk=0.7789290835782194; RK=uUYwDdOaHO; ptcz=32a3e4fec1adb0ad36649af91a142d1b4795fd412017c4617257a865d1fd3bf3; main_login=qq; vqq_access_token=B2145F56D3B5F349360789F2FC815A8C; vqq_appid=101483052; vqq_openid=C451041BD2DBF20318039E0BAA75C1E1; vqq_vuserid=237354545; vqq_refresh_token=5B46657C33D4D5E753CCCF037F50D63D; vqq_next_refresh_time=6600; vqq_login_time_init=1639144464; login_time_init=2021-12-10 21:54:25; uid=554832033; vqq_vusession="
-    + cookie["vqq_vusession"]
-    + ";",
-    "Referer": "https://m.v.qq.com",
-}
+
+def rmVqs(vcookie):
+    return re.sub(r'\s*vqq_vusession=[^;]*;', '', vcookie)
 
 
 def start():
+    sign_headers = {
+        "Referer": "https://m.v.qq.com",
+        "Cookie": f'{rmVqs(vcookie)}vqq_vusession={cookie["vqq_vusession"]};',
+    }
+    print(sign_headers['Cookie'])
+
     sign1 = requests.get(url1, headers=sign_headers).text
     if "Account Verify Error" in sign1:
         print("Sign1 error,Cookie Invalid")

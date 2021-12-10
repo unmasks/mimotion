@@ -28,4 +28,7 @@ jobs:
       - name: 开始
         run: |
           pip3 install requests
-          python3 vqq.py
+          sckey='${{ secrets.SCKEY }}'
+          arkey='${{ secrets.VQQ_AUTH_REFRESH_KEY }}'
+          cookie='${{ secrets.VQQ_COOKIE }}'
+          python3 vqq.py ${sckey} ${arkey} ${cookie}
