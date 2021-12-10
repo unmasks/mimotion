@@ -10,7 +10,7 @@ skey = sys.argv[3]
 sckey = sys.argv[4]
 # 企业微信推送
 # 是否开启企业微信推送false关闭true开启，默认关闭，开启后请填写设置并将上面两个都留空
-position = sys.argv[5]
+position = false
 base_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?'
 req_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token='
 corpid = sys.argv[6]  # 企业ID， 登陆企业微信，在我的企业-->企业信息里查看
@@ -264,7 +264,7 @@ def main(_user,_passwd,min_1, max_1):
     response = requests.post(url, data=data, headers=head).json()
     # print(response)
     result = f"[{now}]\n账号：{user[:3]}****{user[7:]}\n修改步数（{step}）[" + response['message'] + "]\n"
-    #print(result)
+    print(result)
     return result
 
 
