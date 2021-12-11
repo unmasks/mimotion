@@ -2,7 +2,8 @@ name: vqq-sign
 
 on:
   schedule:
-    - cron: '7 23 * * *'
+    # 时区原因，填写x，代表北京时间x+8
+    - cron: '7 15 * * *'
   watch:
     types: started
   workflow_dispatch:

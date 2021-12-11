@@ -39,7 +39,7 @@ if not cookie:
     requests.post(ftqq_url, params=payload)
     exit
 
-print(cookie)
+# print(cookie)
 
 
 def rmVqs(vcookie):
@@ -51,7 +51,7 @@ def start():
         "Referer": "https://m.v.qq.com",
         "Cookie": f"{rmVqs(vcookie)}vqq_vusession={cookie['vqq_vusession']};",
     }
-    print('rmc=' + sign_headers['Cookie'])
+    # print('rmc=' + sign_headers['Cookie'])
 
     sign1 = requests.get(url1, headers=sign_headers).text
     if "Account Verify Error" in sign1:
@@ -70,7 +70,7 @@ def start():
         status = status + "\n\n 链接2 成功"
 
     payload = {"title": "腾讯视频V力值签到通知", "desp": status}
-    print(payload)
+    # print(payload)
     requests.post(ftqq_url, params=payload)
 
 
