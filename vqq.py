@@ -8,7 +8,9 @@
 """
 
 # python
-import sys, requests, re
+import sys
+import requests
+import re
 
 # 推送server酱
 sckey = sys.argv[1]
@@ -18,7 +20,7 @@ ftqq_url = f"https://sctapi.ftqq.com/{sckey}.send"
 arkey = sys.argv[2]
 auth_refresh_url = f"https://access.video.qq.com/user/auth_refresh?{arkey}"
 
-#vcookie
+# vcookie
 vcookie = sys.argv[3]
 # print(vcookie)
 # exit

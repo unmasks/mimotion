@@ -26,11 +26,12 @@ req_url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token="
 corpid = sys.argv[6]  # 企业ID， 登陆企业微信，在我的企业-->企业信息里查看
 corpsecret = sys.argv[7]  # 自建应用，每个自建应用里都有单独的secret
 agentid = sys.argv[8]  # 填写你的应用ID，不加引号，是个整型常数,就是AgentId
-touser = sys.argv[
-    9
-]  # 指定接收消息的成员，成员ID列表（多个接收者用‘|’分隔，最多支持1000个）。特殊情况:指定为”@all”，则向该企业应用的全部成员发送
-toparty = sys.argv[10]  # 指定接收消息的部门，部门ID列表，多个接收者用‘|’分隔，最多支持100个。当touser为”@all”时忽略本参数
-totag = sys.argv[11]  # 指定接收消息的标签，标签ID列表，多个接收者用‘|’分隔，最多支持100个。当touser为”@all”时忽略本参数
+# 指定接收消息的成员，成员ID列表（多个接收者用‘|’分隔，最多支持1000个）。特殊情况:指定为”@all”，则向该企业应用的全部成员发送
+touser = sys.argv[9]
+# 指定接收消息的部门，部门ID列表，多个接收者用‘|’分隔，最多支持100个。当touser为”@all”时忽略本参数
+toparty = sys.argv[10]
+# 指定接收消息的标签，标签ID列表，多个接收者用‘|’分隔，最多支持100个。当touser为”@all”时忽略本参数
+totag = sys.argv[11]
 
 # （用于测试推送如果改了能收到推送，推送设置就没问题，看看是不是set_push列表里面没设置推送，仔细看下面我写的很详细）要修改的步数，直接输入想要修改的步数值，（默认）留空为随机步数，改了这个直接运行固定值（用于测试推送）
 # 测试好记得留空不然一直提交固定步数
@@ -59,9 +60,9 @@ KDICTS = {
 # 默认表示为8点10点13点15点17点19点21点运行,如需修改改time_list列表，如改成:time_list = [7, 9, 13, 15, 17, 19, 20]就表示为7点9点13点15点17点19点20点运行，云函数触发里面也要同步修改
 # 说白了不是刷七次嘛,你希望在什么时候刷,设七个时间点，不要该成0，1，2（就是不要设置0点1点2点运行），其它随便改。如果要刷的次数小于7次多余的时间点不用改保持默认就行如只需要4次就改前4个，但函数触发里面要改成4个的，不能用7个的
 XTIMES = {
-    8: [6000, 8999, 1],
-    9: [9000, 9999, 1],
-    10: [10000, 14999, 0],
+    8: [6000, 9999, 1],
+    9: [10000, 12999, 1],
+    10: [13000, 14999, 0],
     13: [15000, 19999, 0],
     15: [20000, 24999, 0],
     17: [25000, 29999, 0],
@@ -189,7 +190,8 @@ def login(user, password):
         "redirect_uri": "https://s3-us-west-2.amazonaws.com/hm-registration/successsignin.html",
         "token": "access",
     }
-    r1 = requests.post(url1, data=data1, headers=headers, allow_redirects=False)
+    r1 = requests.post(url1, data=data1, headers=headers,
+                       allow_redirects=False)
     location = r1.headers["Location"]
     try:
         code = get_code(location)
@@ -254,7 +256,8 @@ def main(_user, _passwd, min_1, max_1):
     data_json = re.sub(findstep.findall(data_json)[0], step, str(data_json))
 
     url = f"https://api-mifit-cn.huami.com/v1/data/band_data.json?&t={t}"
-    head = {"apptoken": app_token, "Content-Type": "application/x-www-form-urlencoded"}
+    head = {"apptoken": app_token,
+            "Content-Type": "application/x-www-form-urlencoded"}
 
     data = f"userid={userid}&last_sync_data_time=1597306380&device_type=0&last_deviceid=DA932FFFFE8816E7&data_json={data_json}"
 
