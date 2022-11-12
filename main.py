@@ -131,7 +131,7 @@ def getBeijinTime():
         getWeather()
 
     # print(result)
-    xtime = bj_time.strftime("%H")
+    xtime = int(bj_time.strftime("%H"))
     print('xtime', xtime)
     if xtime:
         minStep = XTIMES[xtime][0]
