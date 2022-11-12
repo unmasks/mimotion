@@ -82,22 +82,20 @@ XTIMES = {
 # # 设置结束
 # #now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 # 北京时间
-time_bj = datetime.datetime.today() + datetime.timedelta(hours=8)
-now = time_bj.strftime("%Y-%m-%d %H:%M:%S")
-print('now', now)
+# time_bj = datetime.datetime.today() + datetime.timedelta(hours=8)
+# now = time_bj.strftime("%Y-%m-%d %H:%M:%S")
+# print('now', now)
 tz = pytz.timezone('Asia/Shanghai')
 bj_time = datetime.datetime.now(tz)
-now2 = bj_time.strftime("%Y-%m-%d %H:%M:%S")
-hour = bj_time.strftime("%H")
-print('now2', now2)
-print('hour', hour)
+now = bj_time.strftime("%Y-%m-%d %H:%M:%S")
+
 headers = {"User-Agent": "MiFit/5.3.0 (iPhone; iOS 14.7.1; Scale/3.00)"}
 
 
 # 获取区域天气情况
 def getWeather():
     if area == "NO":
-        print(area == "NO")
+        print("area", "NO")
         return
     else:
         global K, type
@@ -130,10 +128,9 @@ def getBeijinTime():
     if open_get_weather:
         getWeather()
 
-    # print(result)
     xtime = int(bj_time.strftime("%H"))
     print('xtime', xtime)
-    if xtime:
+    if XTIMES.keys().__contains__(xtime):
         minStep = XTIMES[xtime][0]
         maxStep = XTIMES[xtime][1]
         willPush = XTIMES[xtime][2]
