@@ -91,6 +91,7 @@ now = bj_time.strftime("%Y-%m-%d %H:%M:%S")
 
 headers = {"User-Agent": "MiFit/5.3.0 (iPhone; iOS 14.7.1; Scale/3.00)"}
 
+current_milli_time = lambda: int(round(time.time() * 1000))
 
 # 获取区域天气情况
 def getWeather():
@@ -130,6 +131,8 @@ def getBeijinTime():
 
     xtime = int(bj_time.strftime("%H"))
     print('xtime', xtime)
+    if xtime > 21:
+        xtime = 21
     if XTIMES.keys().__contains__(xtime):
         minStep = XTIMES[xtime][0]
         maxStep = XTIMES[xtime][1]
@@ -240,7 +243,8 @@ def main(_user, _passwd, min_1, max_1):
         print("登陆失败!")
         return "login fail!"
 
-    t = get_time()
+    t = current_milli_time()
+    print("current_milli_time", t)
 
     app_token = get_app_token(login_token)
 
@@ -271,11 +275,11 @@ def main(_user, _passwd, min_1, max_1):
 
 
 # 获取时间戳
-def get_time():
-    url = "http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp"
-    response = requests.get(url, headers=headers).json()
-    t = response["data"]["t"]
-    return t
+# def get_time():
+#     url = "http://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp"
+#     response = requests.get(url, headers=headers).json()
+#     t = response["data"]["t"]
+#     return t
 
 
 # 获取app_token
