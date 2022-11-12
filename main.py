@@ -8,6 +8,7 @@ import time
 from typing import Any, Callable, Iterable, TypeVar
 
 import requests
+import pytz
 
 T = TypeVar("T")
 
@@ -83,6 +84,13 @@ XTIMES = {
 # 北京时间
 time_bj = datetime.datetime.today() + datetime.timedelta(hours=8)
 now = time_bj.strftime("%Y-%m-%d %H:%M:%S")
+print('now', now)
+tz = pytz.timezone('Asia/Shanghai')
+bj_time = datetime.datetime.now(tz)
+now2 = bj_time.strftime("%Y-%m-%d %H:%M:%S")
+hour = bj_time.strftime("%H")
+print('now2', now2)
+print('hour', hour)
 headers = {"User-Agent": "MiFit/5.3.0 (iPhone; iOS 14.7.1; Scale/3.00)"}
 
 
@@ -121,29 +129,22 @@ def getBeijinTime():
     type = ""
     if open_get_weather:
         getWeather()
-    r = requests.get(
-        url="http://time1909.beijing-time.org/time.asp",
-        headers={"User-Agent": "Mozilla/5.0"},
-    )
-    if r.status_code == 200:
-        result = r.text
-        # print(result)
-        xtime = find(lambda x: f"nhrs={x}" in result, XTIMES.keys())
-        # print(xtime)
-        if xtime:
-            minStep = XTIMES[xtime][0]
-            maxStep = XTIMES[xtime][1]
-            willPush = XTIMES[xtime][2]
-        else:
-            minStep = 0
-            maxStep = 0
-            willPush = 0
 
-        minStep = int(K * minStep)
-        maxStep = int(K * maxStep)
+    # print(result)
+    xtime = bj_time.strftime("%H")
+    print('xtime', xtime)
+    if xtime:
+        minStep = XTIMES[xtime][0]
+        maxStep = XTIMES[xtime][1]
+        willPush = XTIMES[xtime][2]
     else:
-        print("获取北京时间失败")
-        return
+        minStep = 0
+        maxStep = 0
+        willPush = 0
+
+    minStep = int(K * minStep)
+    maxStep = int(K * maxStep)
+
 
     if minStep != 0 and maxStep != 0:
         user_mi = sys.argv[1]
