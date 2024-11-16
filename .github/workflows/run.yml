@@ -7,7 +7,7 @@ on:
   #  branches: [ main ]
   schedule:
     # 时区原因，填写x，代表北京时间x+8
-    - cron: '7 0,2,5,7,9,11,13 * * *'
+    - cron: '2 0,2,5,7,9,11,13 * * *'
   watch:
     types: started
   workflow_dispatch:
