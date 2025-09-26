@@ -198,7 +198,7 @@ def loginGetCode(user, password):
     }
     r1 = requests.post(url, data=data, headers=headers, allow_redirects=False)
     # 打印响应头，调试用
-    print("📌 Response Headers:", r1.headers)
+    print("📌 Response Headers:", r1.headers, r1.json())
 
     location = r1.headers["Location"]
     try:
