@@ -197,6 +197,9 @@ def loginGetCode(user, password):
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.2"
     }
     r1 = requests.post(url, data=data, headers=headers, allow_redirects=False)
+    # 打印响应头，调试用
+    print("📌 Response Headers:", r1.headers)
+
     location = r1.headers["Location"]
     try:
         code_pattern = re.compile("(?<=access=).*?(?=&)")
